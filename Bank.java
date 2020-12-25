@@ -1,5 +1,5 @@
 public class Bank {
-    private String namaBank;
+    // private String namaBank;
     private int jumlahNasabah;
     private Nasabah nasabah[];
 

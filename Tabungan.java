@@ -10,4 +10,12 @@ public class Tabungan {
     public int getSaldo() {
         return this.saldo;
     }
+    public boolean ambilUang(int jumlah) {
+        if ((this.saldo - jumlah) < 0) {
+            return false;
+        } else {
+            this.saldo -= jumlah;
+            return true;
+        }
+    }
 }
