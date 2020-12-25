@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class Atm {
     public static void main(String[] args) {
         Bank mandiri = new Bank();
@@ -10,14 +9,13 @@ public class Atm {
 
         int pilihanBank = pilihBank();
         int pinAccountUser = userInput.nextInt();
-        boolean condition;
-
+        
         if (pilihanBank == 1) {
-            condition = cekPin(mandiri, pinAccountUser);
+            cekPin(mandiri, pinAccountUser);
         } else if (pilihanBank == 2){
-            condition = cekPin(bri, pinAccountUser);
+            cekPin(bri, pinAccountUser);
         } else if (pilihanBank == 3) {
-            condition = cekPin(bca, pinAccountUser);
+            cekPin(bca, pinAccountUser);
         }
     }
 
@@ -34,15 +32,20 @@ public class Atm {
         return pilihan;
     }
 
-    static boolean cekPin(Bank namaBank , int pinAccount) {
+    static void cekPin(Bank namaBank , int pinAccount) {
+        boolean status = false;
+        int pilihan;
         for (int i = 0; i < namaBank.getJumlahNasabah(); i++) {
             if (pinAccount == namaBank.getNasabah(i).getPin()) {
-                return true;
+                status = true;
+                pilihan = pilihanMenu();
+                aksiMenu(pilihan , pinAccount , namaBank);
+            } else if ((i == namaBank.getJumlahNasabah()) && (status == true)) {
+                System.out.println("Maaf , pin yang anda masukkan salah");
             } else {
                 continue;
             }
         }
-		return false;
     }
     
     static int pilihanMenu() {
@@ -56,5 +59,43 @@ public class Atm {
         System.out.print("Pilihan anda : ");
         pilihan = userInput.nextInt();
         return pilihan;
+    }
+
+    static void aksiMenu(int pilihan , int pinAccount , Bank namaBank) {
+        boolean status = false;
+        Scanner userInput = new Scanner(System.in);
+        int input;
+        switch(pilihan) {
+            case 1:
+                for (int i = 0; i < namaBank.getJumlahNasabah(); i++) {
+                    if (namaBank.getNasabah(i).getPin() == pinAccount) {
+                        System.out.println("Saldo tabungan anda adalah : " + namaBank.getNasabah(i).getTabungan());
+                        status = true;
+                        break;
+                    } else if ((i == namaBank.getJumlahNasabah()) && (status == false)) {
+                        System.out.println("Maaf , saldo atas nama anda tidak ditemukan");
+                    } else {
+                        continue;
+                    }
+                };
+                break;
+            case 2: 
+                status = false;
+                for (int i = 0; i < namaBank.getJumlahNasabah(); i++) {
+                    if (namaBank.getNasabah(i).getPin() == pinAccount) {
+                        System.out.print("Masukkan uang yang ingin ditabung : ");
+                        input = userInput.nextInt();
+                        namaBank.getNasabah(i).getTabungan().tambahSaldo(input);
+                        System.out.println("Saldo anda manjadi : " + namaBank.getNasabah(i).getTabungan().getSaldo());
+                        status = true;
+                        break;
+                    } else if ((i == namaBank.getJumlahNasabah()) && (status == false)) {
+                        System.out.println("Maaf , saldo atas nama anda tidak ditemukan");
+                    } else {
+                        continue;
+                    }
+                };
+                break;
+        }
     }
 }
