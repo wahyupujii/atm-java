@@ -7,6 +7,20 @@ public class Atm {
 
         Scanner userInput = new Scanner(System.in);
 
+        Nasabah wahyu = new Nasabah("Wahyu", "Jl Bogen", "0881026740531", 11111, new Tabungan(100));
+        Nasabah agus = new Nasabah("Agus", "Jl Ploso", "0881026740532", 22222, new Tabungan(200));
+        Nasabah puji = new Nasabah("Puji", "Jl Tambaksari", "0881026740533", 33333, new Tabungan(300));
+        Nasabah tuti = new Nasabah("Tuti", "Jl Rangkah", "0881026740534", 44444, new Tabungan(400));
+        Nasabah ramadhan = new Nasabah("Ramadhan", "Jl Genteng", "0881026740535", 55555, new Tabungan(500));
+        Nasabah bambang = new Nasabah("Bambang", "Jl Rajawali", "0881026740536", 66666, new Tabungan(600));
+
+        mandiri.tambahNasabah(wahyu);
+        mandiri.tambahNasabah(agus);
+        bri.tambahNasabah(puji);
+        bri.tambahNasabah(tuti);
+        bca.tambahNasabah(ramadhan);
+        bca.tambahNasabah(bambang);
+
         int pilihanBank = pilihBank();
 
         System.out.print("Masukkan no pin anda : ");
@@ -42,8 +56,8 @@ public class Atm {
                 status = true;
                 pilihan = pilihanMenu();
                 aksiMenu(pilihan , pinAccount , namaBank);
-            } else if ((i == namaBank.getJumlahNasabah()) && (status == true)) {
-                System.out.println("Maaf , pin yang anda masukkan salah");
+            } else if ((i == namaBank.getJumlahNasabah()) || (status == true)) {
+                System.out.println("Maaf , akun dengan pin tersebut tidak ditemukan");
             } else {
                 continue;
             }
@@ -74,7 +88,7 @@ public class Atm {
                         System.out.println("Saldo tabungan anda adalah : " + namaBank.getNasabah(i).getTabungan().getSaldo());
                         status = true;
                         break;
-                    } else if ((i == namaBank.getJumlahNasabah()) && (status == false)) {
+                    } else if ((i == namaBank.getJumlahNasabah()) || (status == false)) {
                         System.out.println("Maaf , akun atas nama anda tidak ditemukan");
                     } else {
                         continue;
@@ -91,7 +105,7 @@ public class Atm {
                         System.out.println("Saldo anda manjadi : " + namaBank.getNasabah(i).getTabungan().getSaldo());
                         status = true;
                         break;
-                    } else if ((i == namaBank.getJumlahNasabah()) && (status == false)) {
+                    } else if ((i == namaBank.getJumlahNasabah()) || (status == false)) {
                         System.out.println("Maaf , akun atas nama anda tidak ditemukan");
                     } else {
                         continue;
@@ -112,7 +126,7 @@ public class Atm {
                         } else {
                             System.out.println("Pengambilan uang gagal , mungkin saldo anda tidak cukup");
                         }
-                    } else if ((i == namaBank.getJumlahNasabah()) && (status == false)) {
+                    } else if ((i == namaBank.getJumlahNasabah()) || (status == false)) {
                         System.out.println("Maaf , akun atas nama anda tidak ditemukan");
                     } else {
                         continue;
