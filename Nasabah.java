@@ -1,24 +1,18 @@
 public class Nasabah extends Bank {
     private String nama;
-    private String alamat;
-    private String noTelp;
     private int pin;
+    private int noRek;
     private Tabungan tabungan;
     
-    public Nasabah (String inputnama , String inputalamat , String inputnotelp , int inputpin , Tabungan saldoAwal) {
+    public Nasabah (String inputnama , int inputpin , int inputnorek , Tabungan saldoAwal) {
         this.nama = inputnama;
-        this.alamat = inputalamat;
-        this.noTelp = inputnotelp;
         this.pin = inputpin;
+        this.noRek = inputnorek;
         this.tabungan = saldoAwal;
     }
 
     public String getNamaNasabah() {
         return this.nama;
-    }
-
-    public String getnoTelp() {
-        return this.noTelp;
     }
 
     public int getPin() {
@@ -27,5 +21,8 @@ public class Nasabah extends Bank {
 
     public Tabungan getTabungan() {
         return this.tabungan;
+    }
+    public int getNoRek() {
+        return this.noRek;
     }
 }

@@ -7,12 +7,12 @@ public class Atm {
 
         Scanner userInput = new Scanner(System.in);
 
-        Nasabah wahyu = new Nasabah("Wahyu", "Jl Bogen", "0881026740531", 11111, new Tabungan(100));
-        Nasabah agus = new Nasabah("Agus", "Jl Ploso", "0881026740532", 22222, new Tabungan(200));
-        Nasabah puji = new Nasabah("Puji", "Jl Tambaksari", "0881026740533", 33333, new Tabungan(300));
-        Nasabah tuti = new Nasabah("Tuti", "Jl Rangkah", "0881026740534", 44444, new Tabungan(400));
-        Nasabah ramadhan = new Nasabah("Ramadhan", "Jl Genteng", "0881026740535", 55555, new Tabungan(500));
-        Nasabah bambang = new Nasabah("Bambang", "Jl Rajawali", "0881026740536", 66666, new Tabungan(600));
+        Nasabah wahyu = new Nasabah("Wahyu", 11111, 11111111 , new Tabungan(100));
+        Nasabah agus = new Nasabah("Agus", 22222, 22222222 , new Tabungan(200));
+        Nasabah puji = new Nasabah("Puji", 33333, 33333333 , new Tabungan(300));
+        Nasabah tuti = new Nasabah("Tuti", 44444, 44444444 ,new Tabungan(400));
+        Nasabah ramadhan = new Nasabah("Ramadhan", 55555 , 55555555 , new Tabungan(500));
+        Nasabah bambang = new Nasabah("Bambang", 66666 , 66666666 , new Tabungan(600));
 
         mandiri.tambahNasabah(wahyu);
         mandiri.tambahNasabah(agus);
@@ -22,7 +22,7 @@ public class Atm {
         bca.tambahNasabah(bambang);
 
         int pilihanBank = pilihBank();
-
+        
         System.out.print("Masukkan no pin anda : ");
         int pinAccountUser = userInput.nextInt();
         
@@ -56,7 +56,7 @@ public class Atm {
                 status = true;
                 pilihan = pilihanMenu();
                 aksiMenu(pilihan , pinAccount , namaBank);
-            } else if ((i == namaBank.getJumlahNasabah()) || (status == true)) {
+            } else if (i == namaBank.getJumlahNasabah()-1 && status == false) {
                 System.out.println("Maaf , akun dengan pin tersebut tidak ditemukan");
             } else {
                 continue;
@@ -71,7 +71,8 @@ public class Atm {
         System.out.println("1. Melihat saldo tabungan");
         System.out.println("2. Menambah saldo tabungan");
         System.out.println("3. Mengambil uang dari saldo tabungan");
-        System.out.println("4. Keluar");
+        System.out.println("4. Transfer bank sama");
+        System.out.println("5. Transfer bank beda");
         System.out.print("Pilihan anda : ");
         pilihan = userInput.nextInt();
         return pilihan;
@@ -88,7 +89,7 @@ public class Atm {
                         System.out.println("Saldo tabungan anda adalah : " + namaBank.getNasabah(i).getTabungan().getSaldo());
                         status = true;
                         break;
-                    } else if ((i == namaBank.getJumlahNasabah()) || (status == false)) {
+                    } else if (i == namaBank.getJumlahNasabah()-1 && status == false) {
                         System.out.println("Maaf , akun atas nama anda tidak ditemukan");
                     } else {
                         continue;
@@ -105,7 +106,7 @@ public class Atm {
                         System.out.println("Saldo anda manjadi : " + namaBank.getNasabah(i).getTabungan().getSaldo());
                         status = true;
                         break;
-                    } else if ((i == namaBank.getJumlahNasabah()) || (status == false)) {
+                    } else if (i == namaBank.getJumlahNasabah()-1 && status == false) {
                         System.out.println("Maaf , akun atas nama anda tidak ditemukan");
                     } else {
                         continue;
@@ -125,14 +126,30 @@ public class Atm {
                             break;
                         } else {
                             System.out.println("Pengambilan uang gagal , mungkin saldo anda tidak cukup");
+                            break;
                         }
-                    } else if ((i == namaBank.getJumlahNasabah()) || (status == false)) {
+                    } else if (i == namaBank.getJumlahNasabah()-1 && status == false) {
                         System.out.println("Maaf , akun atas nama anda tidak ditemukan");
                     } else {
                         continue;
                     }
                 };
                 break;
+            case 4: 
+                status = false;
+                System.out.print("Masukkan no rek tujuan : ");
+                input = Integer.parseInt(userInput.nextLine());
+                for (int i = 0; i < namaBank.getJumlahNasabah(); i++) {
+                    if (namaBank.getNasabah(i).getNoRek() == input) {
+                        System.out.println("Masukkan jumlah uang : ");
+                        input = Integer.parseInt(userInput.nextLine());
+                    } else {
+
+                    }
+                }
+            
+            
+            
             default : 
                 break;
         }
