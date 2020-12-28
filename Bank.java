@@ -1,9 +1,10 @@
 public class Bank {
-    // private String namaBank;
+    private String namaBank;
     private int jumlahNasabah;
     private Nasabah nasabah[];
 
-    public Bank () {
+    public Bank (String inputNamaBank) {
+        this.namaBank = inputNamaBank;
         nasabah = new Nasabah[200];
     }
     public void tambahNasabah (Nasabah nasabahBaru) {
@@ -15,5 +16,8 @@ public class Bank {
     }
     public Nasabah getNasabah(int index) {
         return this.nasabah[index];
+    }
+    public String getNamaBank() {
+        return this.namaBank;
     }
 }

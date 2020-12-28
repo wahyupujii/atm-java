@@ -2,70 +2,81 @@ import java.util.*;
 
 public class Atm {
     public static void main(String[] args) {
-        Bank mandiri = new Bank();
-        Bank bri = new Bank();
-        Bank bca = new Bank();
+        Bank mandiri = new Bank("Mandiri");
+        Bank bri = new Bank("BRI");
 
         Scanner userInput = new Scanner(System.in);
 
         Nasabah wahyu = new Nasabah("Wahyu", 11111, 11111111 , new Tabungan(100));
         Nasabah agus = new Nasabah("Agus", 22222, 22222222 , new Tabungan(200));
+
         Nasabah puji = new Nasabah("Puji", 33333, 33333333 , new Tabungan(300));
         Nasabah tuti = new Nasabah("Tuti", 44444, 44444444 ,new Tabungan(400));
-        Nasabah ramadhan = new Nasabah("Ramadhan", 55555 , 55555555 , new Tabungan(500));
-        Nasabah bambang = new Nasabah("Bambang", 66666 , 66666666 , new Tabungan(600));
 
         mandiri.tambahNasabah(wahyu);
         mandiri.tambahNasabah(agus);
         bri.tambahNasabah(puji);
         bri.tambahNasabah(tuti);
-        bca.tambahNasabah(ramadhan);
-        bca.tambahNasabah(bambang);
 
+        System.out.println("Selamat datang di ATM Bersama");
+        System.out.println("Silahkan pilih bank : ");
         int pilihanBank = pilihBank();
         
         System.out.print("Masukkan no pin anda : ");
         int pinAccountUser = userInput.nextInt();
-        
-        if (pilihanBank == 1) {
-            cekPin(mandiri, pinAccountUser);
-        } else if (pilihanBank == 2){
-            cekPin(bri, pinAccountUser);
-        } else if (pilihanBank == 3) {
-            cekPin(bca, pinAccountUser);
+    
+        int pilihan;
+        if ( pilihanBank == 1 ) {
+            for (int i = 0; i < mandiri.getJumlahNasabah(); i++) {
+                if (mandiri.getNasabah(i).getPin() == pinAccountUser) {
+                    pilihan = pilihanMenu();
+                    if (pilihan == 5) {
+                        pilihanBank = pilihBank();
+                        if (pilihanBank == 1) {
+                            System.out.println("Maaf jika anda ingin transfer bank sama , silahkan pilih menu ke - 4");
+                        } else {
+                            transferBedaBank(bri, mandiri, pinAccountUser , mandiri.getNasabah(i));
+                        }
+                    } else {
+                        aksiMenu(pilihan, pinAccountUser, mandiri, i);
+                    }
+                } else if (i == mandiri.getJumlahNasabah()-1) {
+                    System.out.println("Maaf akun di anda di bank mandiri tidak ada");
+                } else {
+                    continue;
+                }
+            }
+        } else if (pilihanBank == 2) {
+            for (int i = 0; i < bri.getJumlahNasabah(); i++) {
+                if (bri.getNasabah(i).getPin() == pinAccountUser) {
+                    pilihan = pilihanMenu();
+                    if (pilihan == 5) {
+                        pilihanBank = pilihBank();
+                        if (pilihanBank == 1) {
+                            transferBedaBank(mandiri, bri, pinAccountUser , bri.getNasabah(i));
+                        } else if (pilihanBank == 2) {
+                            System.out.println("Maaf jika anda ingin transfer bank sama , silahkan pilih menu ke - 4");
+                        }
+                    } else {
+                        aksiMenu(pilihan, pinAccountUser, bri, i);
+                    }
+                } else if (i == bri.getJumlahNasabah()-1) {
+                    System.out.println("Maaf akun di anda di bank bri tidak ada");
+                } else {
+                    continue;
+                }
+            }
         }
     }
 
     static int pilihBank() {
         int pilihan;
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Selamat datang di ATM Bersama");
-        System.out.println("Silahkan pilih bank : ");
         System.out.println("1. Mandiri");
         System.out.println("2. BRI");
-        System.out.println("3. BCA");
         System.out.print("Pilihan anda : ");
         pilihan = userInput.nextInt();
         return pilihan;
-    }
-
-    static void cekPin(Bank namaBank , int pinAccount) {
-        Scanner userInput = new Scanner(System.in);
-        int jumlah;
-        int pilihan;
-        int noRekTujuan;
-        boolean status = false;
-        for (int i = 0; i < namaBank.getJumlahNasabah(); i++) {
-            if (pinAccount == namaBank.getNasabah(i).getPin()) {
-                status = true;
-                pilihan = pilihanMenu();
-                aksiMenu(pilihan , pinAccount , namaBank , i);
-            } else if (i == namaBank.getJumlahNasabah()-1 && status == false) {
-                System.out.println("Maaf , akun dengan pin tersebut tidak ditemukan");
-            } else {
-                continue;
-            }
-        }
     }
     
     static int pilihanMenu() {
@@ -123,6 +134,7 @@ public class Atm {
                     if (namaBank.getNasabah(j).getPin() == pinAccount) {
                         System.out.print("Masukkan jumlah yang ingin diambil : ");
                         input = userInput.nextInt();
+                        System.out.println("Saldo awal anda : " + namaBank.getNasabah(i).getTabungan().getSaldo());
                         status = namaBank.getNasabah(j).getTabungan().ambilUang(input);
                         if (status) {
                             System.out.println("Anda mengambil sebanyak " + input);
@@ -154,16 +166,45 @@ public class Atm {
                     namaBank.getNasabah(i).getTabungan().setSaldo(saldoAkunAktif);
                     for (int j = 0; j < namaBank.getJumlahNasabah(); j++) {
                         if (namaBank.getNasabah(j).getNoRek() == noRekTujuan) {
+                            System.out.println("Anda transfer : " + jumlah);
                             System.out.println("Saldo anda sekarang : " + saldoAkunAktif);
                             return;
+                        } else if (j == namaBank.getJumlahNasabah()-1){
+                            System.out.println("Akun yang ingin anda transfer tidak ada di bank ini");
                         } else {
-                            System.out.println("Transfer gagal");
                             continue;
                         }
                     }
                 }
                 break;
-            // case 5:
+        }
+    }
+
+    static void transferBedaBank(Bank namaBankTujuan , Bank namaBankAkunAktif , int pinAccountUser , Nasabah nasabahAktif) {
+        Scanner userInput = new Scanner(System.in);
+        int jumlah;
+        int noRekTujuan;
+        int saldoNasabahAktif = nasabahAktif.getTabungan().getSaldo();
+        System.out.print("Masukkan jumlah uang : ");
+        jumlah = userInput.nextInt();
+        System.out.print("Masukkan no rek tujuan : ");
+        noRekTujuan = userInput.nextInt();
+        System.out.println(nasabahAktif.getNamaNasabah());
+        System.out.println("Saldo awal anda : " + saldoNasabahAktif);
+        saldoNasabahAktif -= jumlah;
+        System.out.println("Anda mentransfer " + jumlah);
+        for (int i = 0; i < namaBankTujuan.getJumlahNasabah(); i++) {
+            if (namaBankTujuan.getNasabah(i).getNoRek() == noRekTujuan) {
+                namaBankTujuan.getNasabah(i).getTabungan().tambahSaldo(jumlah);
+                nasabahAktif.getTabungan().setSaldo(saldoNasabahAktif);
+                System.out.println("Saldo anda sekarang : " + saldoNasabahAktif);
+                return; 
+            } else if (i == namaBankTujuan.getJumlahNasabah()-1 ) {
+                System.out.println("Maaf no rek yang anda tujukan tidak ada");
+                return;
+            } else {
+                continue;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-public class Nasabah extends Bank {
+public class Nasabah {
     private String nama;
     private int pin;
     private int noRek;
